@@ -1,0 +1,91 @@
+% !TeX document-id = {e03e7fd2-79d7-4ae2-923d-792ccfc7ca6e}
+% !TeX TS-program = lualatex
+% !BIB TS-program = biber
+
+\documentclass[12pt,openany]{book}
+
+\input{preamble.tex}
+
+\usepackage[%
+	a4paper, asymmetric,
+	top=2cm, bottom=3cm, left=2.5cm, right=2cm,
+]{geometry}
+
+\usepackage{fixme} % imported again because of TeXStudio doesn't want highlight notes
+
+\tikzexternalize[prefix=tikzfigures/] % we want different folders for thesis and autoreferat
+
+%%% Page headers / footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{15.5pt} % fixes fancyhdr warning
+\renewcommand{\chaptermark}[1]{\markboth{\scshape\chaptername~$\thechapter$.~\truncate{0.4\linewidth}{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\slshape\thesection.~\truncate{0.4\linewidth}{#1}}}
+
+\fancyhead[R]{\rightmark}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%%% strip all figures
+%\usepackage{environ}
+%\RenewEnviron{figure}{}
+
+%%% show all keys
+%\usepackage{showkeys}
+
+\begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{title}
+
+
+\pagenumbering{Roman}
+
+%\listoffixmes\vspace*{1cm}
+%\input{TODO}
+
+\tableofcontents
+
+%\setstretch{1.3}
+\clearpage
+\pagenumbering{arabic}
+
+\fancyhead[R]{}
+\fancyhead[L]{\scshape Введение}
+
+% Введение
+\input{introduction}
+
+\clearpage
+\fancyhead[R]{\rightmark}
+\fancyhead[L]{\leftmark}
+
+% Литобзор
+\input{literature_review}
+
+% Постановка задачи
+%\input{goal}
+
+% Методы
+\input{methods}
+
+% Основная часть
+\input{chap_interaction}
+\input{chap_formation}
+\input{chap_eq_noneq_distributions}
+\input{chap_structure_phase_transition}
+
+\renewcommand{\chaptermark}[1]{\markboth{\scshape\truncate{0.5\linewidth}{#1}}{}}
+
+% Основные результаты и выводы
+\input{conclusion}
+
+% Список обозначений
+%\input{acronyms}
+
+% Списки литературы
+\input{bibliography}
+\input{acknowledgements}
+
+\end{document}

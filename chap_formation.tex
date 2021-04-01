@@ -1,0 +1,104 @@
+% !TeX root = phd_thesis_Syromyatnikov.tex
+
+\chapter{Формирование наноструктур на вицинальных поверхностях металлов}
+\label{chap:formation}
+
+\blindfootnote{Результаты этой главы были опубликованы в работах A4, A6, A7, A9 из списка публикаций по теме диссертации.}
+%\cite{Syromyatnikov:mplb:2016,Syromyatnikov:PhysRevB:2018, SyromyatnikovJetpl2019rus}
+
+\lipsum[1-3]
+
+\section{Раздел 1}
+\lipsum[4-7]
+
+\begin{figure}
+	\centering
+	\tikzsetnextfilename{our_distributions_1T}
+	\begin{tikzpicture}
+	\pgfplotsset{
+		width=0.99\linewidth,
+		height=7cm,
+		%
+		X/.style={mark=none, ultra thick}
+	}
+	\tikzmath{
+		function gauss(\x, \mmu, \ssigma) {
+			return exp(- (\x - \mmu)^2. / (2. * \ssigma^2)) / (sqrt(2. * 3.1415) * \ssigma);
+		};
+	}
+	
+	\begin{axis}[
+	name=curves,
+	domain=0:400, samples=401, xmin=0, xmax=400, ymin=0,
+	xtick distance=100, ytick distance=0.01,
+	yticklabel=\tickprint{fixed,fixed zerofill,precision=2},
+	xlabel={Длина, атомы}, ylabel={Вероятность}
+	]
+	\addplot+ [X,tabred]   { gauss(x, 15, 8) } node[pos=20/400,right] {130 K};
+	\addplot+ [X,tabblue]  { gauss(x, 48, 21) } node[pos=48/400,above] {160 K};
+	\addplot+ [X,tabgreen] { gauss(x, 115, 53) } node[pos=115/400,above] {190 K};
+	\addplot+ [X,taborange]{ gauss(x, 215, 104) } node[pos=215/400,above] {220 K};
+	\end{axis}
+	
+	\tikzset{
+		placeholder/.style={minimum width=0.96\linewidth,minimum height=3.6cm,below=0.2cm,draw,help lines},
+	}
+	
+	\node[placeholder] (a130) at (curves.outer south) {};
+	\node[placeholder] (a160) at (a130.south) {};
+	\node[placeholder] (a190) at (a160.south) {};
+	\node[placeholder] (a220) at (a190.south) {};
+	
+	\tikzmath{\numrows = 20; \ymaxnr = \numrows + 1;};
+	
+	\pgfplotsset{
+		chains/.style = {
+			width=1.055\linewidth, height=5.15cm, anchor=center, enlargelimits=0, ymin=0, ymax=\ymaxnr,
+			xmax=220,
+			%		xmin=-1, xmax=221, x filter/.expression={x > 220 ? nan},
+			only marks,	mark size=1pt,
+			ticks=none, tick style={draw=none},
+			tick label style={overlay}, label style={overlay},
+		}
+	}
+	
+	\pgfplotstableread[col sep=comma]{fig/spt/T130.csv}\loadedtableB
+	\pgfplotstableread[col sep=comma]{fig/spt/T160.csv}\loadedtableC
+	\pgfplotstableread[col sep=comma]{fig/spt/T190.csv}\loadedtableD
+	\pgfplotstableread[col sep=comma]{fig/spt/T220.csv}\loadedtableE
+	
+	\begin{axis}[chains, name=B, at=(a130.center)]
+	\foreach \x in {1,...,\numrows}{ \addplot[only marks,tabred] table[x=n\x, y expr={\x}] \loadedtableB; }
+	\end{axis}
+	
+	\begin{axis}[chains, name=C, at=(a160.center)]
+	\foreach \x in {1,...,\numrows}{ \addplot[only marks,tabblue] table[x=n\x, y expr={\x}] \loadedtableC; }
+	\end{axis}
+	
+	\begin{axis}[chains, name=D, at=(a190.center)]
+	\foreach \x in {1,...,\numrows}{ \addplot[only marks,tabgreen] table[x=n\x, y expr={\x}] \loadedtableD; }
+	\end{axis}
+	
+	\begin{axis}[chains, name=E, at=(a220.center)]
+	\foreach \x in {1,...,\numrows}{ \addplot[only marks,taborange] table[x=n\x, y expr={\x}] \loadedtableE; }
+	\end{axis}
+	
+	\node[below left=0.4cm] at (curves.north east) {а};
+	
+	\tikzset{
+		tag/.style={below left,align=right}
+	}
+	\node[tag] at (B.north west) {б};
+	\node[tag] at (C.north west) {в};
+	\node[tag] at (D.north west) {г};
+	\node[tag] at (E.north west) {д};
+	\end{tikzpicture}
+	\caption{Распределения длин атомных цепочек (а) и фрагменты массивов цепочек на вицинальной поверхности (б, в, г, д) в системе Co/Cu после напыления при четырех разных температурах: 130~К, 160~K, 190~K, 220~K соответственно. Длина расчетной ячейки составляла 600 атомов, длина представленного фрагмента составляет 200 атомов.}
+	\label{fig:our_distributions_1T}
+\end{figure}
+
+\section{Раздел 2}
+\lipsum[11-14]
+
+\section{Раздел 3}
+\lipsum[6-8]

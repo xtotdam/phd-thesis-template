@@ -1,0 +1,253 @@
+\usepackage{iftex}
+
+\ifPDFTeX
+	\usepackage{cmap} % should be first
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1,T2A]{fontenc}
+	\usepackage[english,russian]{babel}
+
+	\usepackage[breakwords]{truncate}
+\fi
+
+\ifLuaTeX
+	\usepackage{fontspec}
+
+	% from https://github.com/AndreyAkinshin/Russian-Phd-LaTeX-Dissertation-Template/
+	\setmonofont{CMU Typewriter Text}
+	\newfontfamily\cyrillicfonttt{CMU Typewriter Text}
+	\defaultfontfeatures{Ligatures=TeX}
+	\setmainfont{CMU Serif}
+	\newfontfamily\cyrillicfont{CMU Serif}
+	\setsansfont{CMU Sans Serif}
+	\newfontfamily\cyrillicfontsf{CMU Sans Serif}
+	
+	\usepackage{polyglossia}
+	\setmainlanguage[babelshorthands=true]{russian}
+	\setotherlanguage{english}
+%	\setotherlanguage{german}
+	
+	\usepackage[fit]{lualatex-truncate}
+\fi
+
+% Programming
+\usepackage{xifthen}
+
+% Language support
+
+\usepackage{csquotes}
+
+% Typesetting
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+%\usepackage{tocbibind}
+\usepackage{xspace}
+\usepackage{setspace}
+\onehalfspacing
+
+% Extra symbols
+\usepackage{fontawesome5}
+\usepackage{textcomp}
+
+% Tables
+\usepackage{array}
+\usepackage{booktabs}
+
+% Highlightiing
+\usepackage[normalem]{ulem}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{commath}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\DeclareMathOperator{\const}{const}
+
+
+
+
+%%% Drawing with TikZ / pgfplots
+\usepackage{graphicx}
+
+\usepackage[svgnames,x11names]{xcolor}
+\colorlet{tabblue}{blue!70!green}
+\colorlet{tabgreen}{green!50!black!85!white}
+\colorlet{taborange}{orange}
+\colorlet{tabred}{red!80!black}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{bbox}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{external}
+\usetikzlibrary{fadings}
+\usetikzlibrary{math}
+\usetikzlibrary{matrix}
+\usetikzlibrary{patterns}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.misc}
+
+
+%%% PGFplots setup
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\newcommand{\tickprint}[1]{\small\pgfmathprintnumber[verbatim,#1]{\tick}}
+
+\pgfplotsset{
+	compat=newest,
+	xticklabel=\tickprint{},
+	yticklabel=\tickprint{},
+	scaled y ticks=false,
+	%	set layers=axis on top, % BAD!
+	every axis/.append style={
+		line width=0.6pt, % /tikz/semithick==0.6pt
+		%
+		scaled y ticks=false,
+		ticklabel shift=0pt,
+		tick align=inside,
+		tick pos=left,
+		tickwidth=0.6pt,
+		subtickwidth=0.6pt,
+		major tick length=3pt,
+		minor tick length=1.5pt,
+		tick style={semithick,black,overlay},
+		%
+		minor tick num=4,
+	},
+}
+
+
+
+
+
+
+%%% TikZ helpers (for debug purposes)
+\tikzset{nosep/.style={inner sep=0,outer sep=0}}
+
+\newcommand{\helpangles}[1]{
+	\foreach \a in {0,5,...,355} \draw[help lines] (#1.center) -- (#1.\a) -- ++(\a:0.5) node[font=\tiny] {\a};
+}
+
+\tikzset{%
+	show curve controls/.style={
+		postaction={
+			decoration={
+				show path construction,
+				curveto code={
+					\draw [blue,very thin]
+					(\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+					(\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+					\fill [red, opacity=0.5]
+					(\tikzinputsegmentsupporta) circle [radius=.5ex]
+					(\tikzinputsegmentsupportb) circle [radius=.5ex];
+				}
+			},
+			decorate
+}}}
+\tikzset{show curve controls/.style={}}  % disables code above
+
+
+
+
+% Hyperlinks
+\usepackage{hyperref}  % should be last
+\hypersetup{
+	linktocpage,
+	colorlinks,
+	linkcolor={red!70!black},
+	citecolor={green!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand*{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}} } 
+
+
+%%% Colorful fixmes and missing refs and missing cites (if no biblatex is present)
+\input{citedebug}  % must go after hyperref
+
+
+
+
+%%% Bibliography
+\usepackage[backend=biber,
+clearlang=true,autolang=other,language=autobib,
+style=nature,
+doi=false,url=false,eprint=false,isbn=false,
+sorting=none,sortcites=true,
+maxnames=7,minnames=3,defernumbers=true,date=year]{biblatex}
+
+\addbibresource{bib/litreview.bib}
+\addbibresource{bib/methods.bib}
+\addbibresource{bib/interaction.bib}
+\addbibresource{bib/formation.bib}
+\addbibresource{bib/eqnoneq.bib}
+\addbibresource{bib/spt.bib}
+
+\addbibresource{bib/2020-review.bib}
+\addbibresource{bib/master-diploma.bib}
+
+\addbibresource{bib/articles.bib}
+\addbibresource{bib/conferences.bib}
+
+\AtEveryBibitem{
+	\clearfield{issn}
+	\clearfield{issue}
+	\clearfield{month}
+	\clearfield{abstract}
+	\clearlist{language}
+}
+
+%\renewcommand{\finalnamedelim}{\addcomma\space\bibstring{and}\space}
+\renewcommand{\finalnamedelim}{\addcomma\space}
+
+\renewcommand{\bibrangedash}{\textendash}
+
+
+%%% Git version
+\usepackage{shellesc}
+%\ShellEscape{git describe --tags --always --abbrev=40 --dirty > git-version.tex}
+\ShellEscape{git describe --always --abbrev=40 --always > git-version-commit.tex}
+\ShellEscape{git describe --tags --abbrev=10 --always > git-describe.tex}
+
+\usepackage{catchfile}
+%\CatchFileDef{\GitVersion}{git-version.tex}{}
+\CatchFileDef{\GitCommit}{git-version-commit.tex}{}
+\CatchFileDef{\GitDescribe}{git-describe.tex}{}
+\hypersetup{pdfinfo={GitVersion={\GitDescribe},GitCommit={\GitCommit}}}
+\usepackage[useregional]{datetime2}
+
+
+
+
+%%% Technical stuff
+\usepackage[figure,table,xspace]{totalcount} % count figures and tables
+
+\usepackage{lastpage} % count pages
+\usepackage{refcount}
+
+\usepackage{totcount} % count bibliography items
+\newtotcounter{phdthesiscitenum}
+\setcounter{phdthesiscitenum}{-21} 
+% 21 = 10 articles + 11 abstracts
+\AtEveryBibitem{\stepcounter{phdthesiscitenum}}
+
+\usepackage{lipsum}
+
+
+%%% Footnote without number
+\newcommand\blindfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%% Further tweaking
+\renewcommand{\arraystretch}{1.2} % more vertical space in tables
+
+% \overfullrule=2mm % shows overfull markers without 'draft' option

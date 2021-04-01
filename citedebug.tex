@@ -1,0 +1,56 @@
+% !TeX root = phd_thesis_Syromyatnikov.tex
+
+% MUST GO AFTER \usepackage{hyperref}
+
+% makes fixes colorful
+\usepackage{fixme}
+\usepackage{soulutf8}
+\usepackage{etoolbox}
+
+\ifLuaTeX
+	% https://tex.stackexchange.com/questions/339382/soul-highlight-removes-some-characters-from-text
+	\makeatletter
+	\font\SOUL@tt="CMU Typewriter Text"
+	\setbox\z@\hbox{\SOUL@tt-}
+	\SOUL@ttwidth\wd\z@ %reset default width of -
+	\makeatother
+\fi
+
+\fxsetup{status=draft,author= ,layout=inline,nomargin,theme=color}
+\definecolor{fxnote}{rgb}{0,0,0}
+\definecolor{fxwarning}{rgb}{0,0,0}
+\definecolor{fxerror}{rgb}{0,0,0}
+\definecolor{fxfatal}{rgb}{0,0,0}
+
+\colorlet{fxnotebg}{green!60}
+\colorlet{fxwarningbg}{yellow!60}
+\colorlet{fxerrorbg}{red!40!orange!50}
+\colorlet{fxfatalbg}{red!70}
+% redefine the layout macro:
+\makeatletter
+\renewcommand*\FXLayoutInline[3]{%
+    \@fxdocolon {#3}{%
+        \@fxuseface {inline}%
+        \begingroup
+        \sethlcolor{fx#1bg}%
+        \color{fx#1}\ignorespaces \hl{#3\@fxcolon #2}%
+        \endgroup}}
+
+\renewcommand*\FXLayoutContentsLine[3]{%
+    \iffx@mode@multiuser%
+    \fxaddcontentsline{\ignorespaces#3 \protect\sethlcolor{fx#1bg}\color{fx#1}\hl{\fxnotename{#1}:\thesection #2}}%
+    \else%
+    \fxaddcontentsline{\protect\sethlcolor{fx#1bg}\color{fx#1}\hl{%
+    	\fxnotename{#1}:~\texttt{\thesection}~#2%
+    }}%
+    \fi}
+\makeatother
+
+
+% emphasizes missing references and citations
+\makeatletter
+\patchcmd{\@setref}{\bfseries ??}{\fxerror{Ref}}{}{}
+\patchcmd{\@citex}{\bfseries ?}{\fxerror{Cite}}{}{}
+\patchcmd{\NAT@citexnum}{\reset@font\bfseries?}{\fxerror{Cite}}{}{}
+\patchcmd{\NAT@citex}{\reset@font\bfseries ?}{\fxerror{Cite}}{}{}
+\makeatother
